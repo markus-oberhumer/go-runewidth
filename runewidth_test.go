@@ -134,6 +134,23 @@ func TestSorted(t *testing.T) {
 	}
 }
 
+func TestRuneWidthEqualsString1Width(t *testing.T) {
+	c1 := NewCondition()
+	c1.EastAsianWidth = false
+	c2 := NewCondition()
+	c2.EastAsianWidth = true
+	for r := rune(0); r <= utf8.MaxRune; r++ {
+		s := string(r)
+		rw1 := c1.RuneWidth(r)
+		sw1 := c1.StringWidth(s)
+		rw2 := c2.RuneWidth(r)
+		sw2 := c2.StringWidth(s)
+		if rw1 != sw1 || rw2 != sw2 {
+			t.Errorf("rune %d: %d %d %d %d\n", r, rw1, sw1, rw2, sw2)
+		}
+	}
+}
+
 var runewidthtests = []struct {
 	in    rune
 	out   int
